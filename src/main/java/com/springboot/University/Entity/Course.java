@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+//@Getter
+//@Setter
+//@NoArgsConstructor
 public class Course {
 
     @Id
@@ -27,5 +27,39 @@ public class Course {
         this.title = title;
         this.credits = credits;
         this.department = department;
+    }
+
+    public Course() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
