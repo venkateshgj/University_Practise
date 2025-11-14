@@ -1,5 +1,6 @@
 package com.springboot.University.Controller;
 
+import com.springboot.University.DTO.CourseDTO;
 import com.springboot.University.Entity.Course;
 import com.springboot.University.Service.iCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class CourseController {
     private iCourseService courseService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
         return ResponseEntity.ok(courseService.getAllCourses());
     }
 
@@ -29,7 +30,7 @@ public class CourseController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Course> createNewCourse(@RequestBody Course course) {
+    public ResponseEntity<CourseDTO> createNewCourse(@RequestBody CourseDTO course) {
         return ResponseEntity.ok(courseService.createCourse(course));
     }
 

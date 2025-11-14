@@ -1,16 +1,17 @@
 package com.springboot.University.Service;
 
+import com.springboot.University.DTO.CourseDTO;
 import com.springboot.University.Entity.Course;
 
 import java.util.List;
 
 public interface CourseService {
 
-    List<Course> getAllCourses();
+    List<CourseDTO> getAllCourses();
 
     Course getCourseById(Long id);
 
-    Course createCourse(Course course);
+    CourseDTO createCourse(CourseDTO courseDTO);
 
     Course updateCourse(Long id, Course course);
 
