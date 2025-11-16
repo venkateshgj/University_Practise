@@ -14,11 +14,14 @@ import java.util.Optional;
 public class iCourseService implements CourseService{
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private Mapper mapper;
     @Override
     public List<CourseDTO> getAllCourses() {
 
         List<Course> allCourses = courseRepository.findAll();
-        List<CourseDTO> courseDTOS = allCourses.stream().map( course -> Mapper.courseToCourseDTO(course) ).toList();
+        List<CourseDTO> courseDTOS = allCourses.stream().map( course -> mapper.courseToCourseDTO(course) ).toList();
         return courseDTOS;
     }
 
@@ -27,14 +30,10 @@ public class iCourseService implements CourseService{
         return courseRepository.findById(id).orElse(null);
     }
 
-//    @Override
-//    public Course createCourse(Course course) {
-//        return courseRepository.save(course);
-//    }
-
+    @Override
     public CourseDTO createCourse(CourseDTO courseDTO) {
-        Course course = Mapper.courseDTOToCourse(courseDTO);
-        return null;
+        Course course = mapper.courseDTOToCourse(courseDTO);
+        return mapper.courseToCourseDTO(courseRepository.save(course));
     }
 
 

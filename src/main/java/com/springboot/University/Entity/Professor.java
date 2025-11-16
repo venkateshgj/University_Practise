@@ -18,7 +18,6 @@ public class Professor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
-
     private String name;
     private String department;
 
@@ -47,6 +46,9 @@ public class Professor {
 
     public List<Course> getCourses() {
         return courses;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setDepartment(String department) {

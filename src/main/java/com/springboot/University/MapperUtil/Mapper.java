@@ -4,15 +4,23 @@ import com.springboot.University.DTO.CourseDTO;
 import com.springboot.University.DTO.ProfessorDTO;
 import com.springboot.University.Entity.Course;
 import com.springboot.University.Entity.Professor;
+import com.springboot.University.Repository.CourseRepository;
 import com.springboot.University.Repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Component
 public class Mapper {
     
     @Autowired
-    private static ProfessorRepository professorRepository;
+    private ProfessorRepository professorRepository;
 
-    public static ProfessorDTO entityToProfessorDTO(Professor professor){
+    @Autowired
+    private CourseRepository courseRepository;
+
+    public ProfessorDTO professorToProfessorDTO(Professor professor){
         if(professor != null){
             ProfessorDTO professorDTO = new ProfessorDTO();
             professorDTO.setId(professor.getId());
@@ -20,18 +28,30 @@ public class Mapper {
             professorDTO.setDepartment(professor.getDepartment());
 
             if (professor.getCourses() != null) {
-                professorDTO.setCourseIds(
-                        professor.getCourses().stream().map(course -> course.getId()).toList());
+                List<Long> courseIds = professor.getCourses().stream().map(course -> course.getId()).toList();
+                professorDTO.setCourseIds(courseIds);
             }
             return professorDTO;
         }
         return null;
     }
-    public static Professor professorDTOToEntity(ProfessorDTO professorDTO){
+    public Professor professorDTOToProfessor(ProfessorDTO professorDTO){
+        if(professorDTO != null){
+            Professor professor = new Professor();
+            professor.setId(professorDTO.getId());
+            professor.setName(professorDTO.getName());
+            professor.setDepartment(professorDTO.getDepartment());
+
+            if(professorDTO.getCourseIds() != null){
+                List<Course> courses = courseRepository.findAllById(professorDTO.getCourseIds());
+                professor.setCourses(courses);
+            }
+            return professor;
+        }
         return null;
     }
 
-    public static CourseDTO courseToCourseDTO(Course course){
+    public CourseDTO courseToCourseDTO(Course course){
         if(course != null) {
             CourseDTO courseDTO = new CourseDTO();
             courseDTO.setId(course.getId());
@@ -40,14 +60,14 @@ public class Mapper {
             courseDTO.setDepartment(course.getDepartment());
 
             if (course.getProfessor() != null) {
-                courseDTO.setProfessorsId(course.getProfessor().getId());
+                courseDTO.setProfessorId(course.getProfessor().getId());
             }
             return courseDTO;
         }
         return null;
     }
 
-    public static Course courseDTOToCourse(CourseDTO courseDTO){
+    public Course courseDTOToCourse(CourseDTO courseDTO){
         if(courseDTO != null) {
             Course course = new Course();
             course.setId(courseDTO.getId());
@@ -55,9 +75,8 @@ public class Mapper {
             course.setCredits(courseDTO.getCredits());
             course.setDepartment(courseDTO.getDepartment());
             
-            course.setProfessor(
-                    professorRepository.findById(courseDTO.getProfessorsId()).orElse(null)
-            );
+            Professor professorReturned = professorRepository.findById(courseDTO.getProfessorId()).orElse(null);
+            course.setProfessor( professorReturned);
             return course;
         }
         return null;

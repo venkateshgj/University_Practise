@@ -42,11 +42,11 @@ public class CourseDTO {
         this.department = department;
     }
 
-    public Long getProfessorsId() {
+    public Long getProfessorId() {
         return professorId;
     }
 
-    public void setProfessorsId(Long professorsId) {
+    public void setProfessorId(Long professorsId) {
         this.professorId = professorsId;
     }
 }

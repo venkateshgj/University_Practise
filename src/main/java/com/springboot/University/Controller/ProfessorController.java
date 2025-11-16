@@ -1,5 +1,6 @@
 package com.springboot.University.Controller;
 
+import com.springboot.University.DTO.ProfessorDTO;
 import com.springboot.University.Entity.Professor;
 import com.springboot.University.Entity.Student;
 import com.springboot.University.Service.iProfessorService;
@@ -16,7 +17,7 @@ public class ProfessorController {
     private iProfessorService professorService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Professor>> listAllProfessors(){
+    public ResponseEntity<List<ProfessorDTO>> listAllProfessors(){
         return ResponseEntity.ok(professorService.getAllProfessors());
     }
 
@@ -29,8 +30,8 @@ public class ProfessorController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Professor> createNewProfessorRecord(@RequestBody Professor professor){
-        return ResponseEntity.ok(professorService.createProfessor(professor));
+    public ResponseEntity<ProfessorDTO> createNewProfessorRecord(@RequestBody ProfessorDTO professorDto){
+        return ResponseEntity.ok(professorService.createProfessor(professorDto));
     }
 
     @PutMapping("/update/{id}")

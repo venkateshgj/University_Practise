@@ -1,16 +1,17 @@
 package com.springboot.University.Service;
 
+import com.springboot.University.DTO.ProfessorDTO;
 import com.springboot.University.Entity.Professor;
 
 import java.util.List;
 
 public interface ProfessorService {
 
-    List<Professor> getAllProfessors();
+    List<ProfessorDTO> getAllProfessors();
 
     Professor getProfessorById(Long id);
 
-    Professor createProfessor(Professor professor);
+    ProfessorDTO createProfessor(ProfessorDTO professorDTO);
 
     Professor updateProfessorById(Long id, Professor professor);
 
