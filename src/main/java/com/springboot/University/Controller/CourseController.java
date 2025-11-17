@@ -30,16 +30,17 @@ public class CourseController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<CourseDTO> createNewCourse(@RequestBody CourseDTO course) {
+    public ResponseEntity<Course> createNewCourse(@RequestBody CourseDTO course) {
         return ResponseEntity.ok(courseService.createCourse(course));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Course> updateCourse(@RequestBody Course course, @PathVariable Long id) {
-        if(courseService.getCourseById(id) == null) {
+    public ResponseEntity<Course> updateCourse(@RequestBody CourseDTO courseDto, @PathVariable Long id) {
+        Course savedCourse = courseService.updateCourse(id, courseDto);
+        if(savedCourse == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(courseService.updateCourse(id, course));
+        return ResponseEntity.ok(savedCourse);
     }
 
     @DeleteMapping("/delete/{id}")

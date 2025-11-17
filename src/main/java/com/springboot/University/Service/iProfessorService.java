@@ -35,12 +35,13 @@ public class iProfessorService implements ProfessorService {
     }
 
     @Override
-    public Professor updateProfessorById(Long id, Professor professor) {
+    public Professor updateProfessorById(Long id, ProfessorDTO professorDto) {
+
         Optional<Professor> existingProfessorOptional = professorRepository.findById(id);
         if(existingProfessorOptional.isPresent()){
             Professor existingProfessor = existingProfessorOptional.get();
-            existingProfessor.setName(professor.getName());
-            existingProfessor.setDepartment(professor.getDepartment());
+            existingProfessor.setName(professorDto.getName());
+            existingProfessor.setDepartment(professorDto.getDepartment());
 
             Professor updatedProfessor = professorRepository.save(existingProfessor);
             return updatedProfessor;

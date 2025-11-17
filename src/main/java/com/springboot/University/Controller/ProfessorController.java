@@ -35,11 +35,12 @@ public class ProfessorController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Professor> updateProfessorRecord(@RequestBody Professor professor, @PathVariable Long id){
-        if(professorService.getProfessorById(id) == null) {
+    public ResponseEntity<Professor> updateProfessorRecord(@RequestBody ProfessorDTO professorDto, @PathVariable Long id){
+        Professor savedProfessor = professorService.updateProfessorById(id, professorDto);
+        if(savedProfessor == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(professorService.updateProfessorById(id, professor));
+        return ResponseEntity.ok(savedProfessor);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -1,5 +1,7 @@
 package com.springboot.University.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,6 +25,7 @@ public class Professor {
 
     // One professor - many courses
     @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Course> courses; // instead taking list of course Ids, in springboot we can take list of course objects
 
     public Professor(String name, String department) {

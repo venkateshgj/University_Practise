@@ -13,7 +13,7 @@ public interface ProfessorService {
 
     ProfessorDTO createProfessor(ProfessorDTO professorDTO);
 
-    Professor updateProfessorById(Long id, Professor professor);
+    Professor updateProfessorById(Long id, ProfessorDTO professorDto);
 
     boolean deleteProfessorById(Long id);
 }

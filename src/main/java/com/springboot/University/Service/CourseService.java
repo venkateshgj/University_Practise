@@ -11,9 +11,9 @@ public interface CourseService {
 
     Course getCourseById(Long id);
 
-    CourseDTO createCourse(CourseDTO courseDTO);
+    Course createCourse(CourseDTO courseDTO);
 
-    Course updateCourse(Long id, Course course);
+    Course updateCourse(Long id, CourseDTO course);
 
     boolean deleteCourseById(Long id);
 }

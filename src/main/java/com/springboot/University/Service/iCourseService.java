@@ -2,9 +2,12 @@ package com.springboot.University.Service;
 
 import com.springboot.University.DTO.CourseDTO;
 import com.springboot.University.Entity.Course;
+import com.springboot.University.Entity.Professor;
 import com.springboot.University.MapperUtil.Mapper;
 import com.springboot.University.Repository.CourseRepository;
+import com.springboot.University.Repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +17,9 @@ import java.util.Optional;
 public class iCourseService implements CourseService{
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private ProfessorRepository professorRepository;
 
     @Autowired
     private Mapper mapper;
@@ -31,20 +37,25 @@ public class iCourseService implements CourseService{
     }
 
     @Override
-    public CourseDTO createCourse(CourseDTO courseDTO) {
+    public Course createCourse(CourseDTO courseDTO) {
         Course course = mapper.courseDTOToCourse(courseDTO);
-        return mapper.courseToCourseDTO(courseRepository.save(course));
+        return courseRepository.save(course);
     }
 
 
     @Override
-    public Course updateCourse(Long id, Course course) {
+    public Course updateCourse(Long id, CourseDTO courseDto) {
         Optional<Course> existingCourseOptional = courseRepository.findById(id);
         if(existingCourseOptional.isPresent()){
             Course existingCourse = existingCourseOptional.get();
-            existingCourse.setTitle(course.getTitle());
-            existingCourse.setCredits(course.getCredits());
-            existingCourse.setDepartment(course.getDepartment());
+            existingCourse.setTitle(courseDto.getTitle());
+            existingCourse.setCredits(courseDto.getCredits());
+            existingCourse.setDepartment(courseDto.getDepartment());
+
+            Optional<Professor> existingProfessorOptional = professorRepository.findById(courseDto.getProfessorId());
+            if(existingProfessorOptional.isPresent()){
+                existingCourse.setProfessor(existingProfessorOptional.get());
+            }
             return courseRepository.save(existingCourse);
         }
         return null;
