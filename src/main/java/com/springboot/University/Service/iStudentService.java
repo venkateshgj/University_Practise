@@ -1,6 +1,8 @@
 package com.springboot.University.Service;
 
+import com.springboot.University.DTO.StudentDTO;
 import com.springboot.University.Entity.Student;
+import com.springboot.University.MapperUtil.Mapper;
 import com.springboot.University.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,14 @@ public class iStudentService implements StudentService{
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private Mapper mapper;
     @Override
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentDTO> getAllStudents() {
+        List<Student> allStudents =  studentRepository.findAll();
+        List<StudentDTO> studentDTOList = allStudents.stream().map(student -> mapper.studentToStudentDTO(student)).toList();
+        return studentDTOList;
     }
 
     @Override
@@ -28,21 +35,25 @@ public class iStudentService implements StudentService{
     }
 
     @Override
-    public Student createStudent(Student student) {
+    public Student createStudent(StudentDTO studentDto) {
+        Student student = mapper.studentDtoToStudent(studentDto);
         Student savedStudent = studentRepository.save(student);
         return savedStudent;
     }
 
     @Override
-    public Student updateStudent(Student student, Long id) {
+    public StudentDTO updateStudent(StudentDTO studentDto, Long id) {
         Optional<Student> existingStudentOptional = studentRepository.findById(id);
         Student existingStudent = existingStudentOptional.get();
-        existingStudent.setName(student.getName());
-        existingStudent.setDepartment(student.getDepartment());
-        existingStudent.setYear(student.getYear());
+
+        Student receivedStudentForUpdate = mapper.studentDtoToStudent(studentDto);
+        existingStudent.setName(receivedStudentForUpdate.getName());
+        existingStudent.setDepartment(receivedStudentForUpdate.getDepartment());
+        existingStudent.setYear(receivedStudentForUpdate.getYear());
+        existingStudent.setCourses(receivedStudentForUpdate.getCourses());
 
         Student updatedStudent = studentRepository.save(existingStudent);
-        return updatedStudent;
+        return mapper.studentToStudentDTO(updatedStudent);
     }
 
     @Override

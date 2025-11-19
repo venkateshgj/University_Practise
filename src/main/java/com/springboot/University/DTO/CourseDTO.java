@@ -2,6 +2,8 @@ package com.springboot.University.DTO;
 
 import lombok.Data;
 
+import java.util.List;
+
 //@Data
 public class CourseDTO {
     private Long id;
@@ -9,6 +11,7 @@ public class CourseDTO {
     private int credits;
     private String department;
     private Long professorId;
+    private List<Long> studentIds;
     public CourseDTO() {}
     public Long getId() {
         return id;
@@ -48,5 +51,12 @@ public class CourseDTO {
 
     public void setProfessorId(Long professorsId) {
         this.professorId = professorsId;
+    }
+    public List<Long> getStudentIds() {
+        return studentIds;
+    }
+
+    public void setStudentIds(List<Long> studentIds) {
+        this.studentIds = studentIds;
     }
 }

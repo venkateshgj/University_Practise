@@ -32,31 +32,33 @@ public class iCourseService implements CourseService{
     }
 
     @Override
-    public Course getCourseById(Long id) {
-        return courseRepository.findById(id).orElse(null);
+    public CourseDTO getCourseById(Long id) {
+        return mapper.courseToCourseDTO(courseRepository.findById(id).orElse(null));
     }
 
     @Override
-    public Course createCourse(CourseDTO courseDTO) {
+    public CourseDTO createCourse(CourseDTO courseDTO) {
         Course course = mapper.courseDTOToCourse(courseDTO);
-        return courseRepository.save(course);
+        return mapper.courseToCourseDTO(courseRepository.save(course));
     }
 
 
     @Override
-    public Course updateCourse(Long id, CourseDTO courseDto) {
+    public CourseDTO updateCourse(Long id, CourseDTO courseDto) {
         Optional<Course> existingCourseOptional = courseRepository.findById(id);
         if(existingCourseOptional.isPresent()){
             Course existingCourse = existingCourseOptional.get();
-            existingCourse.setTitle(courseDto.getTitle());
-            existingCourse.setCredits(courseDto.getCredits());
-            existingCourse.setDepartment(courseDto.getDepartment());
+            Course recievedCourse = mapper.courseDTOToCourse(courseDto);
+            existingCourse.setTitle(recievedCourse.getTitle());
+            existingCourse.setCredits(recievedCourse.getCredits());
+            existingCourse.setDepartment(recievedCourse.getDepartment());
+            existingCourse.setStudents(recievedCourse.getStudents());
 
             Optional<Professor> existingProfessorOptional = professorRepository.findById(courseDto.getProfessorId());
             if(existingProfessorOptional.isPresent()){
                 existingCourse.setProfessor(existingProfessorOptional.get());
             }
-            return courseRepository.save(existingCourse);
+            return mapper.courseToCourseDTO(courseRepository.save(existingCourse));
         }
         return null;
     }
