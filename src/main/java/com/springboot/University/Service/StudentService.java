@@ -9,7 +9,7 @@ public interface StudentService {
 
     List<StudentDTO> getAllStudents();
 
-    Student getStudentById(Long id);
+    StudentDTO getStudentById(Long id);
 
     Student createStudent(StudentDTO studentDto);
 

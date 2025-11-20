@@ -2,7 +2,7 @@ package com.springboot.University.Service;
 
 import com.springboot.University.DTO.ProfessorDTO;
 import com.springboot.University.Entity.Professor;
-import com.springboot.University.MapperUtil.Mapper;
+import com.springboot.University.Util.Mapper;
 import com.springboot.University.Repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

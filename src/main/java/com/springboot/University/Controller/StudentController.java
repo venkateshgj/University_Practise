@@ -21,10 +21,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentBasedOnId(@PathVariable Long id){
-        if(studentService.getStudentById(id) == null){
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<StudentDTO> getStudentBasedOnId(@PathVariable Long id){
         return ResponseEntity.ok(studentService.getStudentById(id));
     }
 

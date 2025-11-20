@@ -2,7 +2,8 @@ package com.springboot.University.Service;
 
 import com.springboot.University.DTO.StudentDTO;
 import com.springboot.University.Entity.Student;
-import com.springboot.University.MapperUtil.Mapper;
+import com.springboot.University.Exceptions.ResourceNotFoundException;
+import com.springboot.University.Util.Mapper;
 import com.springboot.University.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,13 @@ public class iStudentService implements StudentService{
     }
 
     @Override
-    public Student getStudentById(Long id) {
-        Optional<Student> existingStudentOptional =  studentRepository.findById(id);
-        if(existingStudentOptional.isPresent()){
-            return existingStudentOptional.get();
-        }
-        return null;
+    public StudentDTO getStudentById(Long id) {
+
+        Student student = studentRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Student not found with ID : " + id)
+        );
+
+        return mapper.studentToStudentDTO(student);
     }
 
     @Override

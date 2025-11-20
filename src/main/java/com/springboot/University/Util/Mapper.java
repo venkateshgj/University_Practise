@@ -1,4 +1,4 @@
-package com.springboot.University.MapperUtil;
+package com.springboot.University.Util;
 
 import com.springboot.University.DTO.CourseDTO;
 import com.springboot.University.DTO.ProfessorDTO;
@@ -6,6 +6,8 @@ import com.springboot.University.DTO.StudentDTO;
 import com.springboot.University.Entity.Course;
 import com.springboot.University.Entity.Professor;
 import com.springboot.University.Entity.Student;
+import com.springboot.University.Exceptions.InvalidRequestException;
+import com.springboot.University.Exceptions.ResourceNotFoundException;
 import com.springboot.University.Repository.CourseRepository;
 import com.springboot.University.Repository.ProfessorRepository;
 import com.springboot.University.Repository.StudentRepository;
@@ -50,6 +52,10 @@ public class Mapper {
 
             if(professorDTO.getCourseIds() != null){
                 List<Course> courses = courseRepository.findAllById(professorDTO.getCourseIds());
+
+                for (Course c : courses) {
+                    c.setProfessor(professor);
+                }
                 professor.setCourses(courses);
             }
             return professor;
@@ -87,10 +93,14 @@ public class Mapper {
             course.setCredits(courseDTO.getCredits());
             course.setDepartment(courseDTO.getDepartment());
 
-            if(courseDTO.getProfessorId() != null){
-                Professor professorReturned = professorRepository.findById(courseDTO.getProfessorId()).orElse(null);
-                course.setProfessor( professorReturned);
+            if(courseDTO.getProfessorId() == null){
+                throw new InvalidRequestException("Professor Id is required");
             }
+
+            Professor professorReturned = professorRepository.findById(courseDTO.getProfessorId()).orElseThrow(
+                    () -> new ResourceNotFoundException("Professor not found with ID : " + courseDTO.getProfessorId())
+            );
+            course.setProfessor( professorReturned);
 
             if(courseDTO.getStudentIds() != null){
                 List<Student> students = studentRepository.findAllById(courseDTO.getStudentIds());
@@ -98,6 +108,7 @@ public class Mapper {
             }
             else {
                 course.setStudents(null);
+                throw new InvalidRequestException("Students list is required");
             }
 
 

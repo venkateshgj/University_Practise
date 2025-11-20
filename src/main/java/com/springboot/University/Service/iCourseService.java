@@ -3,11 +3,10 @@ package com.springboot.University.Service;
 import com.springboot.University.DTO.CourseDTO;
 import com.springboot.University.Entity.Course;
 import com.springboot.University.Entity.Professor;
-import com.springboot.University.MapperUtil.Mapper;
+import com.springboot.University.Util.Mapper;
 import com.springboot.University.Repository.CourseRepository;
 import com.springboot.University.Repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
