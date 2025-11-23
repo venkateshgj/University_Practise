@@ -1,5 +1,6 @@
 package com.springboot.University.Controller;
 
+import com.springboot.University.DTO.CourseDTO;
 import com.springboot.University.Entity.Course;
 import com.springboot.University.Service.iCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,12 @@ public class CourseController {
     private iCourseService courseService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
         return ResponseEntity.ok(courseService.getAllCourses());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseBasedOnId(@PathVariable Long id) {
+    public ResponseEntity<CourseDTO> getCourseBasedOnId(@PathVariable Long id) {
         if(courseService.getCourseById(id) == null) {
             return ResponseEntity.notFound().build();
         }
@@ -29,16 +30,17 @@ public class CourseController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Course> createNewCourse(@RequestBody Course course) {
+    public ResponseEntity<CourseDTO> createNewCourse(@RequestBody CourseDTO course) {
         return ResponseEntity.ok(courseService.createCourse(course));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Course> updateCourse(@RequestBody Course course, @PathVariable Long id) {
-        if(courseService.getCourseById(id) == null) {
+    public ResponseEntity<CourseDTO> updateCourse(@RequestBody CourseDTO courseDto, @PathVariable Long id) {
+        CourseDTO savedCourseDto = courseService.updateCourse(id, courseDto);
+        if(savedCourseDto == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(courseService.updateCourse(id, course));
+        return ResponseEntity.ok(savedCourseDto);
     }
 
     @DeleteMapping("/delete/{id}")

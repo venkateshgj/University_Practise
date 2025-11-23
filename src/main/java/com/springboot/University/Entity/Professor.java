@@ -1,13 +1,14 @@
 package com.springboot.University.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 //@Getter
@@ -19,9 +20,12 @@ public class Professor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
-
     private String name;
     private String department;
+
+    // One professor - many courses
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
+    private List<Course> courses; // instead taking list of course Ids, in springboot we can take list of course objects
 
     public Professor(String name, String department) {
         this.name = name;
@@ -42,11 +46,22 @@ public class Professor {
         return department;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setDepartment(String department) {
         this.department = department;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }

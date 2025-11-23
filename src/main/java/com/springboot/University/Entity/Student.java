@@ -1,10 +1,13 @@
 package com.springboot.University.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 //@Getter
@@ -23,6 +26,13 @@ public class Student {
     private String department;
 
     private int year;
+
+    @ManyToMany
+    @JoinTable( name="student_course",
+    joinColumns = @JoinColumn(name = "student_id"),
+    inverseJoinColumns = @JoinColumn(name = "course_id"))
+//    @JsonManagedReference
+    private List<Course> courses; //list of courses
 
     public Student(String name, String department, int year){
         this.name = name;
@@ -47,6 +57,9 @@ public class Student {
     public int getYear() {
         return year;
     }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -58,5 +71,12 @@ public class Student {
 
     public void setYear(int year) {
         this.year = year;
+    }
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }

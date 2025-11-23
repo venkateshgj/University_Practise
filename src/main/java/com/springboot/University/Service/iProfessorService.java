@@ -1,6 +1,8 @@
 package com.springboot.University.Service;
 
+import com.springboot.University.DTO.ProfessorDTO;
 import com.springboot.University.Entity.Professor;
+import com.springboot.University.Util.Mapper;
 import com.springboot.University.Repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,12 @@ import java.util.Optional;
 public class iProfessorService implements ProfessorService {
     @Autowired
     private ProfessorRepository professorRepository;
+    @Autowired
+    private Mapper mapper;
     @Override
-    public List<Professor> getAllProfessors() {
-        return professorRepository.findAll();
+    public List<ProfessorDTO> getAllProfessors() {
+        List<Professor> professors = professorRepository.findAll();
+        return professors.stream().map(professor -> mapper.professorToProfessorDTO(professor)).toList();
     }
 
     @Override
@@ -23,18 +28,20 @@ public class iProfessorService implements ProfessorService {
     }
 
     @Override
-    public Professor createProfessor(Professor professor) {
+    public ProfessorDTO createProfessor(ProfessorDTO professorDto) {
+        Professor professor = mapper.professorDTOToProfessor(professorDto);
         Professor savedProfessor = professorRepository.save(professor);
-        return savedProfessor;
+        return mapper.professorToProfessorDTO(savedProfessor);
     }
 
     @Override
-    public Professor updateProfessorById(Long id, Professor professor) {
+    public Professor updateProfessorById(Long id, ProfessorDTO professorDto) {
+
         Optional<Professor> existingProfessorOptional = professorRepository.findById(id);
         if(existingProfessorOptional.isPresent()){
             Professor existingProfessor = existingProfessorOptional.get();
-            existingProfessor.setName(professor.getName());
-            existingProfessor.setDepartment(professor.getDepartment());
+            existingProfessor.setName(professorDto.getName());
+            existingProfessor.setDepartment(professorDto.getDepartment());
 
             Professor updatedProfessor = professorRepository.save(existingProfessor);
             return updatedProfessor;
