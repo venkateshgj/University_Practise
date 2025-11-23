@@ -28,20 +28,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
+    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
 
         UserDetails user = User.withUsername("admin")
-                .password("{noop}password")
+                .password(passwordEncoder.encode("password"))
                 .roles("ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(user);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
 }
 
