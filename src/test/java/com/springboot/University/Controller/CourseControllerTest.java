@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,10 +48,17 @@ public class CourseControllerTest {
 
         when(courseServiceMock.getCourseById(1L)).thenReturn(courseDtoMock);
 
-        mockMvc.perform(get("/university/api/v1/course/1")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/university/api/v1/course/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L));
 
+    }
+
+    @Test
+    public void getCourseBasedOnIdNullCourseIdTest() throws Exception {
+        when(courseServiceMock.getCourseById(anyLong())).thenReturn(null);
+
+        mockMvc.perform(get("/university/api/v1/course/8").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
