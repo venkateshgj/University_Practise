@@ -6,6 +6,7 @@ import com.springboot.University.Service.StudentService;
 import com.springboot.University.Service.iStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class StudentController {
     @Autowired
     private iStudentService studentService;
     @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     public ResponseEntity<List<StudentDTO>> listAllStudent(){
         return ResponseEntity.ok(studentService.getAllStudents());
     }
@@ -26,6 +28,7 @@ public class StudentController {
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Student> createNewStudentRecord(@RequestBody StudentDTO student){
         return ResponseEntity.ok(studentService.createStudent(student));
     }

@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: University
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/university
+    username: root
+    password: Warlock@19
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+
+university:
+  admin:
+    username: admin
+    password: Paris@11
+    role: ADMIN
+  student:
+    username: student
+    password: Lisbon@10
+    role: STUDENT
+  user:
+    username: user
+    password: Tokyo@07
+    role: USER
