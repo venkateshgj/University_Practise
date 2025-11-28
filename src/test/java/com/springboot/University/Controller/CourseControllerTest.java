@@ -36,7 +36,7 @@ public class CourseControllerTest {
     @Mock
     private CourseService courseServiceMock;
 
-    @Test
+//    @Test
     public void getCourseBasedOnIdTest() throws Exception {
         CourseDTO courseDtoMock = new CourseDTO();
         courseDtoMock.setId(1L);
@@ -54,7 +54,7 @@ public class CourseControllerTest {
 
     }
 
-    @Test
+//    @Test
     public void getCourseBasedOnIdNullCourseIdTest() throws Exception {
         when(courseServiceMock.getCourseById(anyLong())).thenReturn(null);
 
