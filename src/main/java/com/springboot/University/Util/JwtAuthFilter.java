@@ -37,6 +37,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                             .toList()
             );
 
+            // ROLE_ADMIN , ROLE_USER, ROLE_STUDENT
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
         }
